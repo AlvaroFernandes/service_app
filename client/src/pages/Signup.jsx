@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 //design
 import {
@@ -13,8 +15,14 @@ import {
 } from "@mui/material";
 
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
+
+//api functions
+import { register } from "../api/user";
 
 const Signup = () => {
+  const history = useNavigate();
   //states
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -28,6 +36,22 @@ const Signup = () => {
   let hasUpperChar = /(.*[A-Z].*)/.test(password);
   let hasNumber = /(.*[0-9].*)/.test(password);
   let hasSpecialChar = /(.*[^a-zA-z0-9].*)/.test(password);
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await register({ userName, email, password });
+      if (res.error) toast.error(res.error);
+      else {
+        toast.success(res.message);
+        //redirect to login
+        history.replace("/login");
+      }
+    } catch (error) {
+      toast.error(error);
+    }
+  };
 
   return (
     <div className="container mt-5 mb-5 col-10 col-sm-8 col-md-6 col-lg-5">
@@ -79,35 +103,69 @@ const Signup = () => {
           {password && (
             <div className="ml-1" style={{ columns: 2 }}>
               <div>
-                <small className={hasSixChar ? "text-success" : "text-danger"}>
-                  at least 6 characters
-                </small>
+                {hasSixChar ? (
+                  <spam className="text-success">
+                    <CheckCircleIcon className="mr-1" fontSize="small" />
+                    <small>at least 6 characters</small>
+                  </spam>
+                ) : (
+                  <spam className="text-danger">
+                    <CancelIcon className="mr-1" fontSize="small" />
+                    <small>at least 6 characters</small>
+                  </spam>
+                )}
               </div>
               <div>
-                <small
-                  className={hasLowerChar ? "text-success" : "text-danger"}
-                >
-                  one lower case letter
-                </small>
+                {hasLowerChar ? (
+                  <spam className="text-success">
+                    <CheckCircleIcon className="mr-1" fontSize="small" />
+                    <small>one lower case letter</small>
+                  </spam>
+                ) : (
+                  <spam className="text-danger">
+                    <CancelIcon className="mr-1" fontSize="small" />
+                    <small>one lower case letter</small>
+                  </spam>
+                )}
               </div>
               <div>
-                <small
-                  className={hasUpperChar ? "text-success" : "text-danger"}
-                >
-                  one upper case letter
-                </small>
+                {hasUpperChar ? (
+                  <spam className="text-success">
+                    <CheckCircleIcon className="mr-1" fontSize="small" />
+                    <small>one upper case letter</small>
+                  </spam>
+                ) : (
+                  <spam className="text-danger">
+                    <CancelIcon className="mr-1" fontSize="small" />
+                    <small>one upper case letter</small>
+                  </spam>
+                )}
               </div>
               <div>
-                <small className={hasNumber ? "text-success" : "text-danger"}>
-                  one number
-                </small>
+                {hasNumber ? (
+                  <spam className="text-success">
+                    <CheckCircleIcon className="mr-1" fontSize="small" />
+                    <small>one number</small>
+                  </spam>
+                ) : (
+                  <spam className="text-danger">
+                    <CancelIcon className="mr-1" fontSize="small" />
+                    <small>one number</small>
+                  </spam>
+                )}
               </div>
               <div>
-                <small
-                  className={hasSpecialChar ? "text-success" : "text-danger"}
-                >
-                  one special characters
-                </small>
+                {hasSpecialChar ? (
+                  <spam className="text-success">
+                    <CheckCircleIcon className="mr-1" fontSize="small" />
+                    <small>one special characters</small>
+                  </spam>
+                ) : (
+                  <spam className="text-danger">
+                    <CancelIcon className="mr-1" fontSize="small" />
+                    <small>one special characters</small>
+                  </spam>
+                )}
               </div>
             </div>
           )}
@@ -147,6 +205,7 @@ const Signup = () => {
               !hasNumber ||
               !hasSpecialChar
             }
+            onClick={handleRegister}
           >
             Submit
           </Button>
