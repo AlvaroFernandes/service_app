@@ -3,7 +3,9 @@ const router = express.Router();
 
 //import controllers
 const { register } = require("../controllers/user");
-//api routes
-router.post("/register", register);
 
+//middleware
+const { userRegisterValidator } = require("../middlewares/user");
+//api routes
+router.post("/register", userRegisterValidator, register);
 module.exports = router;

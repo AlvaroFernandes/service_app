@@ -28,7 +28,6 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       required: true,
     },
-    jobs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Job" }],
     salt: String,
   },
   {

@@ -20,9 +20,9 @@ exports.register = async (req, res) => {
   }
 
   const user = new User(req.body);
-  await user.save;
+  await user.save();
 
-  res.statu(201).json({
+  res.status(201).json({
     message: "Signup successful! Please Login to preceed.",
   });
 };
