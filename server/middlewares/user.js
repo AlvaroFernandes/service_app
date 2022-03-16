@@ -1,3 +1,5 @@
+const User = require("../models/user");
+
 exports.userRegisterValidator = (req, res, next) => {
   //username not null
   req.check("username", "Username is required").notEmpty();
@@ -7,7 +9,7 @@ exports.userRegisterValidator = (req, res, next) => {
   req.check("email", "Invalid Email").isEmail();
 
   //password check
-  req.check("password", "Password is required").isEmpty();
+  req.check("password", "Password is required").notEmpty();
   req
     .check("password")
     .isLength({ min: 6 })
@@ -29,4 +31,15 @@ exports.userRegisterValidator = (req, res, next) => {
   }
 
   next();
+};
+
+exports.userById = async (req, res, next) => {
+  user.findById(req._id).exec((err, user) => {
+    if (err || !user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    req.user = user;
+    next();
+  });
 };
