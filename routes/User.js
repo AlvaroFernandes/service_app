@@ -7,6 +7,8 @@ const passportConfig = require("../passport");
 const JWT = require("jsonwebtoken");
 
 const User = require("../models/User");
+const Clients = require("../models/Clients");
+const Staffs = require("../models/Staffs");
 const Jobs = require("../models/Jobs");
 
 const signToken = (userID) => {
@@ -67,15 +69,130 @@ userRouter.get(
   "/logout",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    res.clearCookie("access_token");
-    res.json({ user: { username: "", email: "", role: "" }, success: true });
+    res.clearCookie("access_token", { path: "/", domain: "localhost" }).send();
+    res
+      .status(200)
+      .json({ user: { username: "", email: "", role: "" }, success: true });
   }
 );
 
-userRouter.port(
+userRouter.post(
   "/jobs",
   passport.authenticate("jwt", { session: false }),
-  (req, res) => {}
+  (req, res) => {
+    const job = new job(req.body);
+    job.save((error) => {
+      if (error)
+        res
+          .status(500)
+          .json({ message: { msgBody: "Error has occured", msgError: true } });
+      else {
+        req.user.jobs.push(job);
+        req.user.save((error) => {
+          if (error)
+            res.status(500).json({
+              message: { msgBody: "Error has occured", msgError: true },
+            });
+          else {
+            res.status(200).json({
+              message: {
+                msgBody: "Job successfully created",
+                msgError: false,
+              },
+            });
+          }
+        });
+      }
+    });
+  }
 );
 
+userRouter.post(
+  "/inputclient",
+  passport.authenticate("local", { session: false }),
+  (req, res) => {
+    const { name, email, phone, address, price, obs } = req.body;
+    console.log(name);
+    Clients.findOne({ email }, (error, client) => {
+      if (error)
+        res
+          .status(500)
+          .json({ message: { msgBody: "Error has occured", msgError: true } });
+      if (client)
+        res.status(400).json({
+          message: { msgBody: "Client already register", msgError: true },
+        });
+      else {
+        const newClient = new Client({
+          name,
+          email,
+          phone,
+          address,
+          price,
+          obs,
+        });
+        newClient.save((error) => {
+          if (error)
+            res.status(500).json({
+              message: { msgBody: "Error has occured", msgError: true },
+            });
+          else {
+            if (price) {
+              req
+                .assert("price", "Enter a price (numbers only)")
+                .regex(/^\d+(\.\d{2})?$/);
+            }
+            res.status(201).json({
+              message: { msgBody: "Client registered", msgError: false },
+            });
+          }
+        });
+      }
+    });
+  }
+);
+
+userRouter.post(
+  "/inputStaff",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { name, email, phone, address, salary, obs } = req.body;
+    Clients.findOne({ email }, (error, staff) => {
+      if (error)
+        res
+          .status(500)
+          .json({ message: { msgBody: "Error has occured", msgError: true } });
+      if (staff)
+        res.status(400).json({
+          message: { msgBody: "Staff already register", msgError: true },
+        });
+      else {
+        const newStaff = new Staff({
+          name,
+          email,
+          phone,
+          address,
+          salary,
+          obs,
+        });
+        newStaff.save((error) => {
+          if (error)
+            res.status(500).json({
+              message: { msgBody: "Error has occured", msgError: true },
+            });
+          else {
+            if (salary) {
+              req
+                .assert("salary", "Enter a salary(numbers only)")
+                .regex(/^\d+(\.\d{2})?$/);
+            }
+            res.status(201).json({
+              message: { msgBody: "Staff registered", msgError: false },
+            });
+          }
+        });
+      }
+    });
+  }
+);
 module.exports = userRouter;
