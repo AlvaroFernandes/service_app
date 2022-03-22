@@ -24,6 +24,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       enum: ["user", "admin"],
       required: true,
+      default: "user",
     },
     jobs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Jobs" }],
   },

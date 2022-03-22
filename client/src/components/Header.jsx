@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+
+const logo = "Service App";
+const pages = ["login", "signup"];
 
 const Header = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <Link className="navbar-brand" to="/">
-        Service APP
+        {logo}
       </Link>
       <button
         className="navbar-toggler"
@@ -19,17 +22,12 @@ const Header = () => {
         <span className="navbar-toggler-icon"></span>
       </button>
       <div className="collapse navbar-collapse" id="navbarNav">
-        <ul className="navbar-nav ml-auto">
-          <li className="nav-item">
-            <Link className="nav-link" to="/signup">
-              Sign up
+        <ul className="navbar-nav">
+          {pages.map((page) => (
+            <Link className="nav-link text-uppercase" to={`/${page}`}>
+              {page}
             </Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/login">
-              Login
-            </Link>
-          </li>
+          ))}
         </ul>
       </div>
     </nav>
