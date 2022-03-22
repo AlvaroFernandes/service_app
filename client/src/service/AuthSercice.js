@@ -1,0 +1,41 @@
+const Services = {
+  login: async (user) => {
+    const res = await fetch("/user/login", {
+      method: "post",
+      body: JSON.stringify(user),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    const data = await res.json();
+    return data;
+  },
+  register: async (user) => {
+    const res = await fetch("/user/register", {
+      method: "post",
+      body: JSON.stringify(user),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    const data = await res.json();
+    return data;
+  },
+  logout: async () => {
+    const res = await fetch("user/logout");
+    const data = res.json;
+    return data;
+  },
+  isAuthenticated: async () => {
+    const res = await fetch("user/authenticated");
+    console.log(res);
+    if (res.status !== 401) return res.json().then((data) => data);
+    else
+      return {
+        isAuthenticated: false,
+        user: { username: "", email: "", role: "" },
+      };
+  },
+};
+
+export default Services;

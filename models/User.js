@@ -3,22 +3,20 @@ const bcrypt = require("bcrypt");
 
 const UserSchema = new mongoose.Schema(
   {
-    username: {
+    name: {
       type: String,
-      required: true,
+      required: [true, "please add a name"],
       min: 6,
+    },
+    email: {
+      type: String,
+      required: [true, "please add an email"],
       trim: true,
       unique: true,
     },
     password: {
       type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      trim: true,
-      unique: true,
+      required: [true, "please add a password"],
     },
     role: {
       type: String,
@@ -30,26 +28,5 @@ const UserSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-UserSchema.pre("save", function (next) {
-  if (!this.isModified("password")) return next();
-  bcrypt.hash(this.password, 10, (error, passwordHash) => {
-    if (error) return next(error);
-    this.password = passwordHash;
-
-    next();
-  });
-});
-
-UserSchema.methods.comparePassword = function (password, cb) {
-  bcrypt.compare(password, this.password, (error, isMatch) => {
-    if (error) return cb(error);
-    else {
-      if (!isMatch) return cb(null, isMatch);
-
-      return cb(null, this);
-    }
-  });
-};
 
 module.exports = mongoose.model("User", UserSchema);
