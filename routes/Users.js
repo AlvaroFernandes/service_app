@@ -1,13 +1,12 @@
 const express = require("express");
 const userRouter = express.Router();
-require("dotenv").config();
 
 const {
   loginUser,
   registerUser,
   getUserInfo,
   logoutUser,
-} = require("../controllers/UserController");
+} = require("../controllers/UsersController");
 const { protect } = require("../middleware/authMiddleware");
 
 userRouter.post("/register", registerUser);

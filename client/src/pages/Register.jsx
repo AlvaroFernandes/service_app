@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
+
+//design
 import {
   TextField,
   IconButton,
@@ -12,35 +14,49 @@ import {
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
-const Signup = () => {
-  const [userName, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+const Register = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  //password validation
+  const { name, email, password, confirmPassword } = formData;
+
   let hasSixChar = password.length >= 6;
   let hasLowerChar = /(.*[a-z].*)/.test(password);
   let hasUpperChar = /(.*[A-Z].*)/.test(password);
   let hasNumChar = /(.*[0-9].*)/.test(password);
   let hasSpecialChar = /(.*[^a-zA-Z0-9].*)/.test(password);
 
+  const onChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="container mt-5 mb-5 col-10 col-sm-8 col-md-6 col-lg-6">
       <div className="text-center mb-5 alert alert-primary">
         <label htmlFor="" className="h2 mb-10">
-          Sign Up
+          Register
         </label>
         <div className="form-group mb-2">
           <TextField
             size="small"
             variant="outlined"
             className="form-control"
-            label="Username"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
+            label="Name"
+            name="name"
+            value={name}
+            onChange={onChange}
           />
         </div>
         <div className="form-group mb-2">
@@ -49,8 +65,9 @@ const Signup = () => {
             variant="outlined"
             className="form-control"
             label="Email"
+            name="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={onChange}
           />
         </div>
         <div className="form-group mb-2">
@@ -58,9 +75,10 @@ const Signup = () => {
             <InputLabel>Password</InputLabel>
             <OutlinedInput
               label="Password"
+              name="password"
               type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              valeu={password}
+              onChange={onChange}
               endAdornment={
                 <InputAdornment>
                   <IconButton
@@ -114,25 +132,10 @@ const Signup = () => {
             <InputLabel>Confirm Password</InputLabel>
             <OutlinedInput
               label="Comfirm Password"
-              type={showConfirmPassword ? "text" : "password"}
+              name="confirmPassword"
+              type={showPassword ? "text" : "password"}
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              endAdornment={
-                <InputAdornment>
-                  <IconButton
-                    edge="end"
-                    onClick={(e) =>
-                      setShowConfirmPassword(!showConfirmPassword)
-                    }
-                  >
-                    {showConfirmPassword ? (
-                      <VisibilityIcon />
-                    ) : (
-                      <VisibilityOffIcon />
-                    )}
-                  </IconButton>
-                </InputAdornment>
-              }
+              onChange={onChange}
             />
           </FormControl>
           {password && confirmPassword && (
@@ -149,7 +152,7 @@ const Signup = () => {
           <Button
             variant="contained"
             disabled={
-              !userName ||
+              !name ||
               !email ||
               !password ||
               !confirmPassword ||
@@ -160,6 +163,7 @@ const Signup = () => {
               !hasNumChar ||
               !hasSpecialChar
             }
+            onClick={onSubmit}
           >
             Submit
           </Button>
@@ -169,4 +173,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Register;

@@ -7,7 +7,7 @@ const JobsSchema = new mongoose.Schema(
       required: true,
       ref: "User",
     },
-    client: [{ type: mongoose.Schema.Types.ObjectId, ref: "Clients" }],
+    client: { type: mongoose.Schema.Types.ObjectId, ref: "Clients" },
     staff: [{ type: mongoose.Schema.Types.ObjectId, ref: "Staffs" }],
     dateStart: {
       type: Date,

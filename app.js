@@ -14,10 +14,15 @@ app.use(express.json());
 const connectDB = require("./db/connection");
 connectDB();
 
-const userRouter = require("./routes/User");
+const userRouter = require("./routes/Users");
 const jobsRouter = require("./routes/Jobs");
+const clientsRouter = require("./routes/Clients");
+const staffsRouter = require("./routes/Staffs");
+
 app.use("/user", userRouter);
 app.use("/jobs", jobsRouter);
+app.use("/clients", clientsRouter);
+app.use("/staffs", staffsRouter);
 
 app.use(errorHandler);
 
