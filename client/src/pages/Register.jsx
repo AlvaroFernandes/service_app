@@ -1,4 +1,10 @@
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import { registerUser, reset } from "../features/auth/authSlice";
+import Spinner from "../components/Spinner";
 
 //design
 import {
@@ -25,11 +31,30 @@ const Register = () => {
 
   const { name, email, password, confirmPassword } = formData;
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
   let hasSixChar = password.length >= 6;
   let hasLowerChar = /(.*[a-z].*)/.test(password);
   let hasUpperChar = /(.*[A-Z].*)/.test(password);
   let hasNumChar = /(.*[0-9].*)/.test(password);
   let hasSpecialChar = /(.*[^a-zA-Z0-9].*)/.test(password);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess || user) {
+      navigate("/");
+    }
+
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -40,7 +65,17 @@ const Register = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    const userData = {
+      name,
+      email,
+      password,
+    };
+    dispatch(registerUser(userData));
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="container mt-5 mb-5 col-10 col-sm-8 col-md-6 col-lg-6">
@@ -80,11 +115,8 @@ const Register = () => {
               valeu={password}
               onChange={onChange}
               endAdornment={
-                <InputAdornment>
-                  <IconButton
-                    edge="end"
-                    onClick={(e) => setShowPassword(!showPassword)}
-                  >
+                <InputAdornment edge="end">
+                  <IconButton onClick={(e) => setShowPassword(!showPassword)}>
                     {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                   </IconButton>
                 </InputAdornment>
@@ -141,7 +173,7 @@ const Register = () => {
           {password && confirmPassword && (
             <FormHelperText className="ml-1 mt-1">
               {password === confirmPassword ? (
-                <spam className="text-success">Password matches</spam>
+                <span className="text-success">Password matches</span>
               ) : (
                 <span className="text-danger">Password does not match</span>
               )}

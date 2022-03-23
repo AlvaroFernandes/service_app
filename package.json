@@ -5,9 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js",
-    "start": "node app.js",
-    "client": "npm start --prefix client"
+    "dev": "concurrently \"nodemon app.js\" \"npm start --prefix client\"",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
