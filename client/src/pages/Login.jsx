@@ -4,20 +4,47 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { loginUser, reset } from "../features/auth/authSlice";
-import Spinner from "../components/Spinner";
 
 //design
 import {
   TextField,
   IconButton,
-  OutlinedInput,
-  FormControl,
-  InputLabel,
   InputAdornment,
   Button,
+  Container,
+  CssBaseline,
+  Avatar,
+  Typography,
+  Box,
+  Link,
+  Grid,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import LockOutLinedIcon from "@mui/icons-material/LockOutlined";
+
+const Copyright = (props) => {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+};
+
+const theme = createTheme();
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -62,60 +89,87 @@ const Login = () => {
     dispatch(loginUser(userData));
   };
 
-  if (isLoading) {
-    return <Spinner />;
-  }
-
   return (
-    <div className="container mt-5 mb-5 col-10 col-sm-8 col-md-6 col-lg-6">
-      <div className="text-center mb-5 alert alert-primary">
-        <label htmlFor="" className="h2 mb-10">
-          Login
-        </label>
-        <div className="form-group mb-2">
-          <TextField
-            size="small"
-            variant="outlined"
-            className="form-control"
-            label="Email"
-            name="email"
-            value={email}
-            onChange={onChange}
-          />
-        </div>
-        <div className="form-group mb-2">
-          <FormControl variant="outlined" size="small" className="form-control">
-            <InputLabel>Password</InputLabel>
-            <OutlinedInput
-              label="Password"
-              name="password"
-              type={showPassword ? "text" : "password"}
-              valeu={password}
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secundary.main" }}>
+            <LockOutLinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Login
+          </Typography>
+          <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              type="text"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              value={email}
               onChange={onChange}
-              endAdornment={
-                <InputAdornment>
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              id="password"
+              value={password}
+              onChange={onChange}
+              InputProps={{
+                endAdornment: (
                   <IconButton
                     edge="end"
                     onClick={(e) => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                   </IconButton>
-                </InputAdornment>
-              }
+                ),
+              }}
             />
-          </FormControl>
-        </div>
-        <div className="text-center mt-4">
-          <Button
-            variant="contained"
-            disabled={!email || !password}
-            onClick={onSubmit}
-          >
-            Submit
-          </Button>
-        </div>
-      </div>
-    </div>
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              disabled={!email || !password}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="/register" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+        <Copyright xs={{ mt: 5 }} />
+      </Container>
+    </ThemeProvider>
   );
 };
 

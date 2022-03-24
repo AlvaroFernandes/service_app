@@ -9,7 +9,7 @@ const registerUsers = async (userData) => {
     localStorage.setItem("user", JSON.stringify(response.data));
   }
 
-  return response.date;
+  return response.data;
 };
 
 const loginUsers = async (userData) => {
@@ -19,7 +19,7 @@ const loginUsers = async (userData) => {
     localStorage.setItem("user", JSON.stringify(response.data));
   }
 
-  return response.date;
+  return response.data;
 };
 
 const logout = () => {

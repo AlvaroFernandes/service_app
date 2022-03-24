@@ -4,22 +4,45 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { registerUser, reset } from "../features/auth/authSlice";
-import Spinner from "../components/Spinner";
 
 //design
 import {
   TextField,
   IconButton,
-  OutlinedInput,
-  FormControl,
-  InputLabel,
-  InputAdornment,
   Button,
   FormHelperText,
+  Container,
+  CssBaseline,
+  Box,
+  Avatar,
+  Typography,
+  Link,
+  Grid,
 } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
+function Copyright(props) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
+
+const theme = createTheme();
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -50,7 +73,7 @@ const Register = () => {
     }
 
     if (isSuccess || user) {
-      navigate("/");
+      navigate("/dashboard");
     }
 
     dispatch(reset());
@@ -73,135 +96,170 @@ const Register = () => {
     dispatch(registerUser(userData));
   };
 
-  if (isLoading) {
-    return <Spinner />;
-  }
-
   return (
-    <div className="container mt-5 mb-5 col-10 col-sm-8 col-md-6 col-lg-6">
-      <div className="text-center mb-5 alert alert-primary">
-        <label htmlFor="" className="h2 mb-10">
-          Register
-        </label>
-        <div className="form-group mb-2">
-          <TextField
-            size="small"
-            variant="outlined"
-            className="form-control"
-            label="Name"
-            name="name"
-            value={name}
-            onChange={onChange}
-          />
-        </div>
-        <div className="form-group mb-2">
-          <TextField
-            size="small"
-            variant="outlined"
-            className="form-control"
-            label="Email"
-            name="email"
-            value={email}
-            onChange={onChange}
-          />
-        </div>
-        <div className="form-group mb-2">
-          <FormControl variant="outlined" size="small" className="form-control">
-            <InputLabel>Password</InputLabel>
-            <OutlinedInput
-              label="Password"
-              name="password"
-              type={showPassword ? "text" : "password"}
-              valeu={password}
-              onChange={onChange}
-              endAdornment={
-                <InputAdornment edge="end">
-                  <IconButton onClick={(e) => setShowPassword(!showPassword)}>
-                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-          {password && (
-            <div className="ml-1 text-justify" style={{ columns: 2 }}>
-              <div>
-                <small className={hasSixChar ? "text-success" : "text-danger"}>
-                  at least 6 characters
-                </small>
-              </div>
-              <div>
-                <small
-                  className={hasLowerChar ? "text-success" : "text-danger"}
-                >
-                  at least 1 lowercase letter
-                </small>
-              </div>
-              <div>
-                <small
-                  className={hasUpperChar ? "text-success" : "text-danger"}
-                >
-                  at least 1 uppercase letter
-                </small>
-              </div>
-              <div>
-                <small className={hasNumChar ? "text-success" : "text-danger"}>
-                  at least 1 number
-                </small>
-              </div>
-              <div>
-                <small
-                  className={hasSpecialChar ? "text-success" : "text-danger"}
-                >
-                  at least 1 special character
-                </small>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className="form-group">
-          <FormControl variant="outlined" size="small" className="form-control">
-            <InputLabel>Confirm Password</InputLabel>
-            <OutlinedInput
-              label="Comfirm Password"
-              name="confirmPassword"
-              type={showPassword ? "text" : "password"}
-              value={confirmPassword}
-              onChange={onChange}
-            />
-          </FormControl>
-          {password && confirmPassword && (
-            <FormHelperText className="ml-1 mt-1">
-              {password === confirmPassword ? (
-                <span className="text-success">Password matches</span>
-              ) : (
-                <span className="text-danger">Password does not match</span>
-              )}
-            </FormHelperText>
-          )}
-        </div>
-        <div className="text-center mt-4">
-          <Button
-            variant="contained"
-            disabled={
-              !name ||
-              !email ||
-              !password ||
-              !confirmPassword ||
-              password !== confirmPassword ||
-              !hasSixChar ||
-              !hasLowerChar ||
-              !hasUpperChar ||
-              !hasNumChar ||
-              !hasSpecialChar
-            }
-            onClick={onSubmit}
-          >
-            Submit
-          </Button>
-        </div>
-      </div>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <Box component="form" noValidate onSubmit={onSubmit} sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete="given-name"
+                  name="name"
+                  required
+                  fullWidth
+                  id="name"
+                  label="Name"
+                  autoFocus
+                  value={name}
+                  onChange={onChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={onChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  autoComplete="new-password"
+                  value={password}
+                  onChange={onChange}
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton
+                        edge="end"
+                        onClick={(e) => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? (
+                          <VisibilityIcon />
+                        ) : (
+                          <VisibilityOffIcon />
+                        )}
+                      </IconButton>
+                    ),
+                  }}
+                />
+                {password && (
+                  <Grid container spacing={1}>
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="caption"
+                        color={hasSixChar ? "green" : "red"}
+                      >
+                        at least 6 characters
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="caption"
+                        color={hasLowerChar ? "green" : "red"}
+                      >
+                        at least 1 lowercase character
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="caption"
+                        color={hasUpperChar ? "green" : "red"}
+                      >
+                        at least 1 uppercase character
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="caption"
+                        color={hasNumChar ? "green" : "red"}
+                      >
+                        at least 1 number
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="caption"
+                        color={hasSpecialChar ? "green" : "red"}
+                      >
+                        at least 1 special character
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                )}
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="confirmPassword"
+                  label="Confirm Password"
+                  type={showPassword ? "text" : "password"}
+                  id="confirmPassword"
+                  autoComplete="confirm-password"
+                  value={confirmPassword}
+                  onChange={onChange}
+                />
+                {password && confirmPassword && (
+                  <FormHelperText className="ml-1 mt-1">
+                    {password === confirmPassword ? (
+                      <Typography color="green" variant="caption">
+                        Password matches
+                      </Typography>
+                    ) : (
+                      <Typography variant="caption" color="red">
+                        Password does not match
+                      </Typography>
+                    )}
+                  </FormHelperText>
+                )}
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign Up
+            </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link href="/" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+        <Copyright xs={{ mt: 5 }} />
+      </Container>
+    </ThemeProvider>
   );
 };
 
