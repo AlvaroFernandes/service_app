@@ -47,8 +47,8 @@ const theme = createTheme();
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: "fernandes.alvaro@gmail.com",
+    password: "Alvaro@1",
   });
   const [showPassword, setShowPassword] = useState(false);
 
@@ -57,7 +57,7 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
+  const { user, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
 
@@ -67,7 +67,7 @@ const Login = () => {
     }
 
     if (isSuccess || user) {
-      navigate("/");
+      navigate("/dashboard");
     }
 
     dispatch(reset());

@@ -23,6 +23,7 @@ const loginUsers = async (userData) => {
 };
 
 const logout = () => {
+  console.log("authService");
   localStorage.removeItem("user");
 };
 

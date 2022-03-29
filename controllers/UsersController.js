@@ -54,6 +54,7 @@ const loginUser = asyncHandler(async (req, res) => {
       _id: user.id,
       name: user.name,
       email: user.email,
+      role: user.role,
       token: generateToken(user._id),
     });
   } else {
@@ -63,13 +64,7 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const getUserInfo = asyncHandler(async (req, res) => {
-  const { _id, name, email, role } = await User.findById(req.user.id);
-  res.status(200).json({
-    id: _id,
-    name,
-    email,
-    role,
-  });
+  res.status(200).json(req.user);
 });
 
 const logoutUser = asyncHandler(async (req, res) => {

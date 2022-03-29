@@ -51,16 +51,14 @@ const updateJob = asyncHandler(async (req, res) => {
     throw new Error("Job not foud");
   }
 
-  const user = await Users.findById(req.user.id);
-
   //check user
-  if (!user) {
+  if (!req.user) {
     res.status(401);
     throw new Error("User not found");
   }
 
   //make sure the user is altering his jobs.
-  if (job.user.toString() !== user.id) {
+  if (job.user.toString() !== req.user.id) {
     res.status(401);
     throw new Error("User not authorized");
   }
