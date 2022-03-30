@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/Users");
+const sendEmail = require("../middleware/emailMiddleware");
 
 //generate jwt
 const generateToken = (id) => {
@@ -67,11 +68,16 @@ const getUserInfo = asyncHandler(async (req, res) => {
   res.status(200).json(req.user);
 });
 
-const logoutUser = asyncHandler(async (req, res) => {
-  res.clearCookie("access_token", { path: "/", domain: "localhost" }).send();
-  res
-    .status(200)
-    .json({ user: { username: "", email: "", role: "" }, success: true });
+const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    res.status(400);
+    throw new Error("Email not fund");
+  }
+  sendEmail(email);
+  res.status(200).json({ message: "Email funded", email });
 });
 
-module.exports = { loginUser, registerUser, getUserInfo, logoutUser };
+module.exports = { loginUser, registerUser, getUserInfo, forgotPassword };

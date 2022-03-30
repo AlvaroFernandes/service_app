@@ -1,9 +1,9 @@
-import axiso from "axios";
+import axios from "axios";
 
 const USER_URL = "/users/";
 
 const registerUsers = async (userData) => {
-  const response = await axiso.post(USER_URL + "register", userData);
+  const response = await axios.post(USER_URL + "register", userData);
 
   if (response.data) {
     localStorage.setItem("user", JSON.stringify(response.data));
@@ -13,7 +13,7 @@ const registerUsers = async (userData) => {
 };
 
 const loginUsers = async (userData) => {
-  const response = await axiso.post(USER_URL + "login", userData);
+  const response = await axios.post(USER_URL + "login", userData);
 
   if (response.data) {
     localStorage.setItem("user", JSON.stringify(response.data));
@@ -22,15 +22,18 @@ const loginUsers = async (userData) => {
   return response.data;
 };
 
-const logout = () => {
-  console.log("authService");
-  localStorage.removeItem("user");
+const rememberPassword = async (userData) => {
+  const response = await axios.post(USER_URL + "forgotPassword", userData);
+
+  if (response.data) {
+    console.log(response.data);
+  }
 };
 
 const authService = {
   registerUsers,
-  logout,
   loginUsers,
+  rememberPassword,
 };
 
 export default authService;

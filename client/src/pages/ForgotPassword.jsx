@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { loginUser, reset } from "../features/auth/authSlice";
+import { rememberPassword, reset } from "../features/auth/authSlice";
 
 //design
 import {
@@ -45,14 +45,12 @@ const Copyright = (props) => {
 
 const theme = createTheme();
 
-const Login = () => {
+const ForgotPassword = () => {
   const [formData, setFormData] = useState({
     email: "fernandes.alvaro@gmail.com",
-    password: "Alvaro@1",
   });
-  const [showPassword, setShowPassword] = useState(false);
 
-  const { email, password } = formData;
+  const { email } = formData;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -83,9 +81,9 @@ const Login = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    const userData = { email, password };
+    const userData = { email };
 
-    dispatch(loginUser(userData));
+    dispatch(rememberPassword(userData));
   };
 
   return (
@@ -104,7 +102,7 @@ const Login = () => {
             <LockOutLinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Login
+            Forgot Password
           </Typography>
           <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -118,52 +116,15 @@ const Login = () => {
               value={email}
               onChange={onChange}
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type={showPassword ? "text" : "password"}
-              id="password"
-              value={password}
-              onChange={onChange}
-              InputProps={{
-                endAdornment: (
-                  <IconButton
-                    edge="end"
-                    onClick={(e) => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                  </IconButton>
-                ),
-              }}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              disabled={!email || !password}
+              disabled={!email}
             >
-              Sign In
+              Send
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="/forgotPassword" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/register" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
         <Copyright xs={{ mt: 5 }} />
@@ -172,4 +133,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;

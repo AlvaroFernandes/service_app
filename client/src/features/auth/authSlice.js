@@ -49,9 +49,23 @@ export const loginUser = createAsyncThunk(
 );
 
 export const logout = createAsyncThunk("auth/logout", async () => {
-  await authService.logout;
+  await localStorage.removeItem("user");
 });
 
+export const rememberPassword = createAsyncThunk(
+  "/auth/rememberPassword",
+  async (user, thunkAPI) => {
+    try {
+      return await authService.rememberPassword(user);
+    } catch (error) {
+      const message =
+        (error.message && error.response.data && error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -95,6 +109,10 @@ export const authSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         state.user = null;
+      })
+      .addCase(rememberPassword.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
       });
   },
 });
