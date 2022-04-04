@@ -10,7 +10,7 @@ function DashboardContent() {
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: "flex" }}>
-        <MenuLayout title={"Dashboard"} />
+        <MenuLayout title={"Profile"} />
 
         <Box
           component="main"

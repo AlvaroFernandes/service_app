@@ -9,7 +9,6 @@ import { rememberPassword, reset } from "../features/auth/authSlice";
 //design
 import {
   TextField,
-  IconButton,
   Button,
   Container,
   CssBaseline,
@@ -17,13 +16,8 @@ import {
   Typography,
   Box,
   Link,
-  Grid,
-  FormControlLabel,
-  Checkbox,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import LockOutLinedIcon from "@mui/icons-material/LockOutlined";
 
 const Copyright = (props) => {
