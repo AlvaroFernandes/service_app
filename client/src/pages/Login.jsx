@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -67,7 +68,7 @@ const Login = () => {
     }
 
     if (isSuccess || user) {
-      navigate("/dashboard");
+      navigate("/");
     }
 
     dispatch(reset());

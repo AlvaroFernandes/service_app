@@ -2,27 +2,29 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout, reset } from "../features/auth/authSlice";
-import { AdminListItems, UserListItems } from "../components/ListItems";
 
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
-import MuiAppBar from "@mui/material/AppBar";
+import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
-import {
-  CssBaseline,
-  Box,
-  Toolbar,
-  List,
-  Typography,
-  Divider,
-  IconButton,
-  Badge,
-  Tooltip,
-  Avatar,
-  Menu,
-  MenuItem,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import MuiAppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import Container from "@mui/material/Container";
+import Link from "@mui/material/Link";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import WorkIcon from "@mui/icons-material/Work";
+import PeopleIcon from "@mui/icons-material/People";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import MenuIcon from "@mui/icons-material/Menu";
-import { ChevronLeft, Notifications } from "@mui/icons-material";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
 const drawerWidth = 240;
 
@@ -73,20 +75,12 @@ const Drawer = styled(MuiDrawer, {
 const mdTheme = createTheme();
 
 function DashboardContent() {
-  const [anchorElUser, setAnchorElUser] = useState(null);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.auth);
 
   let role;
-  let name;
-  if (!name) {
-    name = "";
-  } else {
-    name = user.name;
-  }
   if (!user) {
     role = "";
   } else {
@@ -95,7 +89,7 @@ function DashboardContent() {
 
   useEffect(() => {
     if (!user) {
-      navigate("/login");
+      navigate("/");
     }
   }, [user, navigate]);
 
@@ -104,18 +98,12 @@ function DashboardContent() {
     setOpen(!open);
   };
 
-  const handleOpenUserMenu = (e) => {
-    setAnchorElUser(e.currentTarget);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
   const onLogout = () => {
+    console.log("logout");
     dispatch(logout());
+    console.log("reset");
     dispatch(reset());
-    navigate("/login");
+    navigate("/");
   };
 
   return (
@@ -149,35 +137,6 @@ function DashboardContent() {
             >
               Dashboard
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <Notifications />
-              </Badge>
-            </IconButton>
-            <Tooltip title="Open settings" sx={{ ml: 1 }}>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={name} src="#" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-user"
-              anchorEl={anchorElUser}
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              keepMounted
-              transformOrigin={{ vertical: "top", horizontal: "right" }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <MenuItem key="profile">
-                <Typography textAlign="center">Profile</Typography>
-              </MenuItem>
-
-              <MenuItem key="logout" onClick={onLogout}>
-                <Typography textAlign="center">Logout</Typography>
-              </MenuItem>
-            </Menu>
-            <IconButton color="inherit"></IconButton>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -190,34 +149,74 @@ function DashboardContent() {
             }}
           >
             <IconButton onClick={toggleDrawer}>
-              <ChevronLeft />
+              <ChevronLeftIcon />
             </IconButton>
           </Toolbar>
           <Divider />
           <List component="nav">
-            {role === "admin" ? AdminListItems : UserListItems}
+            {role === "admin" ? (
+              <>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <DashboardIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Dashboard" />
+                </ListItemButton>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <WorkIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Jobs" />
+                </ListItemButton>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <PeopleIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Clients" />
+                </ListItemButton>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <AccountBoxIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Users" />
+                </ListItemButton>
+                <ListItemButton onClick={onLogout}>
+                  <ListItemIcon>
+                    <MeetingRoomIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Logout" />
+                </ListItemButton>
+              </>
+            ) : (
+              <>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <DashboardIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Dashboard" />
+                </ListItemButton>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <WorkIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Jobs" />
+                </ListItemButton>
+                <ListItemButton onClick={onLogout}>
+                  <ListItemIcon>
+                    <MeetingRoomIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Logout" />
+                </ListItemButton>
+              </>
+            )}
             <Divider sx={{ my: 1 }} />
           </List>
         </Drawer>
-        <Box
-          component="main"
-          sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: "100vh",
-            overflow: "auto",
-          }}
-        >
-          <Toolbar />
-        </Box>
       </Box>
     </ThemeProvider>
   );
 }
 
-export default function Dashboard() {
+export default function Jobs() {
   return <DashboardContent />;
 }
