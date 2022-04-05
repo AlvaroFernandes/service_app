@@ -65,7 +65,16 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const getUserInfo = asyncHandler(async (req, res) => {
-  res.status(200).json(req.user);
+  console.log(req.body);
+  const user = await User.findById(req.body);
+
+  console.log(user);
+  if (!user) {
+    res.status(400);
+    throw new Error("User not found");
+  }
+
+  res.status(200).json(user);
 });
 
 const forgotPassword = asyncHandler(async (req, res) => {

@@ -14,11 +14,13 @@ app.use(express.json());
 const connectDB = require("./db/connection");
 connectDB();
 
+const authRouter = require("./routes/Auth");
 const userRouter = require("./routes/Users");
 const jobsRouter = require("./routes/Jobs");
 const clientsRouter = require("./routes/Clients");
 const staffsRouter = require("./routes/Staffs");
 
+app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/jobs", jobsRouter);
 app.use("/clients", clientsRouter);

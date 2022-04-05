@@ -48,10 +48,12 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+//user Logout
 export const logout = createAsyncThunk("auth/logout", async () => {
   await localStorage.removeItem("user");
 });
 
+//remember password
 export const rememberPassword = createAsyncThunk(
   "/auth/rememberPassword",
   async (user, thunkAPI) => {
@@ -66,6 +68,7 @@ export const rememberPassword = createAsyncThunk(
     }
   }
 );
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,

@@ -7,7 +7,10 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
-import Profile from "./pages/Profile";
+import UserProfile from "./pages/Profile";
+import Clients from "./pages/Clients";
+import Jobs from "./pages/Jobs";
+import Users from "./pages/Users";
 
 const App = () => {
   return (
@@ -19,7 +22,10 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgotPassword" element={<ForgotPassword />} />
-            <Route path="/Profile" element={<Profile />} />
+            <Route path="/profile/:id" element={<UserProfile />} />
+            <Route path="/jobs" element={<Jobs />} />
+            <Route path="/clients" element={<Clients />} />
+            <Route path="/users" element={<Users />} />
           </Routes>
         </div>
       </Router>

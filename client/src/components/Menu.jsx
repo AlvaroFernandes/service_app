@@ -79,18 +79,25 @@ const MenuLayout = ({ title }) => {
 
   const { user } = useSelector((state) => state.auth);
 
-  let name;
-  if (!name) {
-    name = "";
-  } else {
-    name = user.name;
-  }
-
   useEffect(() => {
     if (!user) {
       navigate("/login");
     }
   }, [user, navigate]);
+
+  let name;
+  let role;
+  if (!user) {
+    name = "";
+  } else {
+    name = user.name;
+  }
+
+  if (!user) {
+    role = "";
+  } else {
+    role = user.role;
+  }
 
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
@@ -111,7 +118,7 @@ const MenuLayout = ({ title }) => {
     navigate("/login");
   };
   const handleProfile = () => {
-    navigate("/Profile");
+    navigate("/profile/" + user._id);
   };
   return (
     <ThemeProvider theme={mdTheme}>
@@ -189,7 +196,7 @@ const MenuLayout = ({ title }) => {
         </Toolbar>
         <Divider />
         <List component="nav">
-          <ListItems />
+          <ListItems role={role} />
           <Divider sx={{ my: 1 }} />
         </List>
       </Drawer>

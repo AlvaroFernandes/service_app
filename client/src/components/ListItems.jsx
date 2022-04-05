@@ -11,46 +11,51 @@ import PeopleIcon from "@mui/icons-material/People";
 import WorkIcon from "@mui/icons-material/Work";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 
-export const ListItems = () => {
+export const ListItems = (userRole) => {
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.auth);
 
-  const role = user.role;
+  if (!user) {
+    navigate("/login");
+  }
 
-  const handleClickMenu = (e) => {
+  const role = userRole.role;
+
+  const handleClickMenu = (e, props) => {
     e.preventDefault();
-
-    const name = e.target.name;
+    const name = props;
+    console.log(name);
     if (name === "dashboard") {
       navigate("/");
+    } else {
+      const path = "/" + name;
+      navigate(path);
     }
-    const path = "/" + name;
-    navigate(path);
   };
   return (
     <>
       {role === "admin" ? (
         <>
-          <ListItemButton name="dashboard" onClick={handleClickMenu}>
+          <ListItemButton onClick={(e) => handleClickMenu(e, "dashboard")}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItemButton>
-          <ListItemButton onClick={handleClickMenu}>
+          <ListItemButton onClick={(e) => handleClickMenu(e, "jobs")}>
             <ListItemIcon>
               <WorkIcon />
             </ListItemIcon>
             <ListItemText primary="Jobs" />
           </ListItemButton>
-          <ListItemButton onClick={handleClickMenu}>
+          <ListItemButton onClick={(e) => handleClickMenu(e, "clients")}>
             <ListItemIcon>
               <PeopleIcon />
             </ListItemIcon>
-            <ListItemText primary="Customers" />
+            <ListItemText primary="Clients" />
           </ListItemButton>
-          <ListItemButton onClick={handleClickMenu}>
+          <ListItemButton onClick={(e) => handleClickMenu(e, "users")}>
             <ListItemIcon>
               <AccountBoxIcon />
             </ListItemIcon>
@@ -59,13 +64,13 @@ export const ListItems = () => {
         </>
       ) : (
         <>
-          <ListItemButton>
+          <ListItemButton onClick={(e) => handleClickMenu(e, "dashboard")}>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItemButton>
-          <ListItemButton>
+          <ListItemButton onClick={(e) => handleClickMenu(e, "jobs")}>
             <ListItemIcon>
               <WorkIcon />
             </ListItemIcon>

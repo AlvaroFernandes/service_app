@@ -1,6 +1,5 @@
 const asyncHandler = require("express-async-handler");
 const Jobs = require("../models/Jobs");
-const { off } = require("../models/Users");
 const Users = require("../models/Users");
 
 const getJobs = asyncHandler(async (req, res) => {
@@ -15,11 +14,6 @@ const getJobsByUser = asyncHandler(async (req, res) => {
 
 const getJobsByClient = asyncHandler(async (req, res) => {
   const jobs = await Jobs.find({ client });
-  res.status(200).json(jobs);
-});
-
-const getJobsByStaff = asyncHandler(async (req, res) => {
-  const jobs = await Jobs.find({ staff });
   res.status(200).json(jobs);
 });
 
@@ -100,7 +94,6 @@ module.exports = {
   getJobs,
   getJobsByUser,
   getJobsByClient,
-  getJobsByStaff,
   createJob,
   updateJob,
   deleteJob,

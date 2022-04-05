@@ -1,27 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import MenuLayout from "../components/Menu";
+import CreatList from "../components/CreatList";
+import SearchAddBar from "../components/SearchAddBar";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Box, Toolbar } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { getUser } from "../features/users/usersSlice";
 
 const mdTheme = createTheme();
 
-function UserProfile() {
-  const dispatch = useDispatch();
-
-  const { id } = useParams();
-
-  const userInfo = dispatch(getUser(id));
-
-  console.log(userInfo);
-
+function Jobs() {
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: "flex" }}>
-        <MenuLayout title={"Profile"} />
+        <MenuLayout title={"Jobs"} />
 
         <Box
           component="main"
@@ -36,10 +27,23 @@ function UserProfile() {
           }}
         >
           <Toolbar />
+          <SearchAddBar page={"jobs"} />
+          <Box
+            component="div"
+            sx={{
+              backgroundColor: "white",
+              flexGrow: 1,
+              height: "75%",
+              widht: "50%",
+              margin: "5em auto",
+            }}
+          >
+            <CreatList page={"jobs"} />
+          </Box>
         </Box>
       </Box>
     </ThemeProvider>
   );
 }
 
-export default UserProfile;
+export default Jobs;

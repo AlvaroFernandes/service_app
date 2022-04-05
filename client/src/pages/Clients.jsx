@@ -1,27 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 import MenuLayout from "../components/Menu";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Box, Toolbar } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { getUser } from "../features/users/usersSlice";
 
 const mdTheme = createTheme();
 
-function UserProfile() {
-  const dispatch = useDispatch();
-
-  const { id } = useParams();
-
-  const userInfo = dispatch(getUser(id));
-
-  console.log(userInfo);
-
+function Clients() {
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: "flex" }}>
-        <MenuLayout title={"Profile"} />
+        <MenuLayout title={"Clients"} />
 
         <Box
           component="main"
@@ -42,4 +31,4 @@ function UserProfile() {
   );
 }
 
-export default UserProfile;
+export default Clients;
