@@ -118,7 +118,7 @@ const MenuLayout = ({ title }) => {
     navigate("/login");
   };
   const handleProfile = () => {
-    navigate("/profile/" + user._id);
+    navigate("/profile");
   };
   return (
     <ThemeProvider theme={mdTheme}>

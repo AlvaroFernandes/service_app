@@ -1,4 +1,3 @@
-import { RepeatOneSharp } from "@mui/icons-material";
 import axios from "axios";
 
 const JOBS_URL = "/jobs/";

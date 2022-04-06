@@ -1,22 +1,34 @@
 import React, { useEffect } from "react";
 import MenuLayout from "../components/Menu";
+import UserForm from "../components/UserForm";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Box, Toolbar } from "@mui/material";
+import { Box, Paper, Toolbar } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { getUser } from "../features/users/usersSlice";
+import { getUser, reset } from "../features/users/usersSlice";
 
 const mdTheme = createTheme();
 
 function UserProfile() {
   const dispatch = useDispatch();
 
-  const { id } = useParams();
+  const { user } = useSelector((state) => state.auth);
 
-  const userInfo = dispatch(getUser(id));
+  const { userInfo, isLoading, isError, message } = useSelector(
+    (state) => state.user
+  );
 
-  console.log(userInfo);
+  useEffect(() => {
+    if (isError) {
+      console.log(message);
+    }
+
+    dispatch(getUser(user._id));
+
+    return () => {
+      dispatch(reset());
+    };
+  }, [user, isError, message, dispatch]);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -36,6 +48,18 @@ function UserProfile() {
           }}
         >
           <Toolbar />
+          <Paper
+            sx={{
+              dispaly: "flex",
+              m: "10px auto",
+              p: "10px",
+              width: "75%",
+              height: "75%",
+            }}
+            variant={"elevation"}
+          >
+            <UserForm />
+          </Paper>
         </Box>
       </Box>
     </ThemeProvider>

@@ -6,7 +6,7 @@ const registerUsers = async (userData) => {
   const response = await axios.post(AUTH_URL + "register", userData);
 
   if (response.data) {
-    localStorage.setItem("user", JSON.stringify(response.data));
+    localStorage.setItem("auth", JSON.stringify(response.data));
   }
 
   return response.data;
@@ -16,7 +16,7 @@ const loginUsers = async (userData) => {
   const response = await axios.post(AUTH_URL + "login", userData);
 
   if (response.data) {
-    localStorage.setItem("user", JSON.stringify(response.data));
+    localStorage.setItem("auth", JSON.stringify(response.data));
   }
 
   return response.data;
