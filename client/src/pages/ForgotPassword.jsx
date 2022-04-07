@@ -20,24 +20,6 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import LockOutLinedIcon from "@mui/icons-material/LockOutlined";
 
-const Copyright = (props) => {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-};
-
 const theme = createTheme();
 
 const ForgotPassword = () => {
@@ -60,7 +42,7 @@ const ForgotPassword = () => {
     }
 
     if (isSuccess || user) {
-      navigate("/dashboard");
+      navigate("/");
     }
 
     dispatch(reset());
@@ -122,7 +104,6 @@ const ForgotPassword = () => {
             </Button>
           </Box>
         </Box>
-        <Copyright xs={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );

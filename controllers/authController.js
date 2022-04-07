@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const User = require("../models/Users");
 const sendEmail = require("../utils/sendEmail");
 const ErrorResponse = require("../utils/errorResponse");
+const crypto = require("crypto");
 
 //generate jwt
 const registerUser = asyncHandler(async (req, res, next) => {
@@ -56,7 +57,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
     await user.save();
 
-    const resetUrl = `http://localhost:3000/passwordReset/${resetToken}`;
+    const resetUrl = `http://localhost:3000/resetPassword/${resetToken}`;
     const message = `
       <h1> You have requested a password reset</h1>
       <p>Please go to this link to reset your password</p>
@@ -84,7 +85,38 @@ const forgotPassword = asyncHandler(async (req, res) => {
   }
 });
 
-const resetPassword = asyncHandler(async (req, res) => {});
+const resetPassword = asyncHandler(async (req, res, next) => {
+  const resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(req.params.resetPassword)
+    .digest("hex");
+
+  try {
+    const user = await User.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    console.log(user);
+
+    if (!user) {
+      return next(new ErrorResponse("Invalid Reset Token", 400));
+    }
+
+    user.password = req.body.password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+
+    res.status(201).json({
+      success: true,
+      data: "Password reset success",
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
 const sendToken = (user, statusCode, res) => {
   const token = user.getSignedToken();

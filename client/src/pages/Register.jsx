@@ -56,7 +56,7 @@ const Register = () => {
     }
 
     if (isSuccess || user) {
-      navigate("/dashboard");
+      navigate("/");
     }
 
     dispatch(reset());

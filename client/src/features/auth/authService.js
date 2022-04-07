@@ -28,12 +28,27 @@ const rememberPassword = async (userData) => {
   if (response.data) {
     console.log(response.data);
   }
+  return response.data;
+};
+
+const resetPassword = async (userData) => {
+  const response = await axios.put(
+    AUTH_URL + `resetPassword/${userData.resetToken}`,
+    userData
+  );
+
+  if (response.data) {
+    console.log(response.data);
+  }
+
+  return response.data;
 };
 
 const authService = {
   registerUsers,
   loginUsers,
   rememberPassword,
+  resetPassword,
 };
 
 export default authService;
