@@ -120,7 +120,15 @@ const resetPassword = asyncHandler(async (req, res, next) => {
 
 const sendToken = (user, statusCode, res) => {
   const token = user.getSignedToken();
-  res.status(statusCode).json({ success: true, token });
+  res.status(statusCode).json({
+    success: true,
+    user: {
+      role: user.role,
+      _id: user._id,
+      name: user.name,
+    },
+    token,
+  });
 };
 
 module.exports = {

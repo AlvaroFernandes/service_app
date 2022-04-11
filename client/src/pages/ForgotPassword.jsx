@@ -15,7 +15,6 @@ import {
   Avatar,
   Typography,
   Box,
-  Link,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import LockOutLinedIcon from "@mui/icons-material/LockOutlined";

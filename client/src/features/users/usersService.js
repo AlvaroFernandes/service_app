@@ -5,10 +5,12 @@ const USER_URL = "/users/";
 const getUserInfo = async (_id, token) => {
   const config = {
     headers: {
-      Authorization: `Bearer ${token}`,
+      authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.post(USER_URL + "userInfo", _id, config);
+
+  const url = USER_URL + "userInfo/" + _id;
+  const response = await axios.get(url, config);
 
   return response.data;
 };

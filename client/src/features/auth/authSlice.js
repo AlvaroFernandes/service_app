@@ -50,7 +50,7 @@ export const loginUser = createAsyncThunk(
 
 //user Logout
 export const logout = createAsyncThunk("auth/logout", async () => {
-  await localStorage.removeItem("user");
+  await localStorage.removeItem("auth");
 });
 
 //remember password

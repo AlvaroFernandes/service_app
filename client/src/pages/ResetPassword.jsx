@@ -52,6 +52,7 @@ const ResetPassword = () => {
 
   useEffect(() => {
     if (isError) {
+      console.log(isError);
       toast.error(message);
     }
     if (isSuccess || user) {
@@ -75,8 +76,6 @@ const ResetPassword = () => {
       resetToken,
     };
 
-    console.log(userData);
-
     dispatch(resetPassword(userData));
   };
   return (
@@ -98,104 +97,97 @@ const ResetPassword = () => {
             Reset Password
           </Typography>
           <Box component="form" noValidate onSubmit={onSubmit} sx={{ mt: 3 }}>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type={showPassword ? "text" : "password"}
-                id="password"
-                autoComplete="new-password"
-                value={password}
-                onChange={onChange}
-                InputProps={{
-                  endAdornment: (
-                    <IconButton
-                      edge="end"
-                      onClick={(e) => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? (
-                        <VisibilityIcon />
-                      ) : (
-                        <VisibilityOffIcon />
-                      )}
-                    </IconButton>
-                  ),
-                }}
-              />
-              {password && (
-                <Grid container spacing={1}>
-                  <Grid item xs={6}>
-                    <Typography
-                      variant="caption"
-                      color={hasSixChar ? "green" : "red"}
-                    >
-                      at least 6 characters
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography
-                      variant="caption"
-                      color={hasLowerChar ? "green" : "red"}
-                    >
-                      at least 1 lowercase character
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography
-                      variant="caption"
-                      color={hasUpperChar ? "green" : "red"}
-                    >
-                      at least 1 uppercase character
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography
-                      variant="caption"
-                      color={hasNumChar ? "green" : "red"}
-                    >
-                      at least 1 number
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography
-                      variant="caption"
-                      color={hasSpecialChar ? "green" : "red"}
-                    >
-                      at least 1 special character
-                    </Typography>
-                  </Grid>
+            <TextField
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              id="password"
+              autoComplete="new-password"
+              value={password}
+              onChange={onChange}
+              InputProps={{
+                endAdornment: (
+                  <IconButton
+                    edge="end"
+                    onClick={(e) => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  </IconButton>
+                ),
+              }}
+            />
+            {password && (
+              <Grid container spacing={1}>
+                <Grid item xs={6}>
+                  <Typography
+                    variant="caption"
+                    color={hasSixChar ? "green" : "red"}
+                  >
+                    at least 6 characters
+                  </Typography>
                 </Grid>
-              )}
-            </Grid>
+                <Grid item xs={6}>
+                  <Typography
+                    variant="caption"
+                    color={hasLowerChar ? "green" : "red"}
+                  >
+                    at least 1 lowercase character
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography
+                    variant="caption"
+                    color={hasUpperChar ? "green" : "red"}
+                  >
+                    at least 1 uppercase character
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography
+                    variant="caption"
+                    color={hasNumChar ? "green" : "red"}
+                  >
+                    at least 1 number
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography
+                    variant="caption"
+                    color={hasSpecialChar ? "green" : "red"}
+                  >
+                    at least 1 special character
+                  </Typography>
+                </Grid>
+              </Grid>
+            )}
 
-            <Grid item xs={12} sx={{ mt: 3 }}>
-              <TextField
-                required
-                fullWidth
-                name="confirmPassword"
-                label="Confirm Password"
-                type={showPassword ? "text" : "password"}
-                id="confirmPassword"
-                autoComplete="confirm-password"
-                value={confirmPassword}
-                onChange={onChange}
-              />
-              {password && confirmPassword && (
-                <FormHelperText className="ml-1 mt-1">
-                  {password === confirmPassword ? (
-                    <Typography color="green" variant="caption">
-                      Password matches
-                    </Typography>
-                  ) : (
-                    <Typography variant="caption" color="red">
-                      Password does not match
-                    </Typography>
-                  )}
-                </FormHelperText>
-              )}
-            </Grid>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="confirmPassword"
+              label="Confirm Password"
+              type={showPassword ? "text" : "password"}
+              id="confirmPassword"
+              autoComplete="confirm-password"
+              value={confirmPassword}
+              onChange={onChange}
+            />
+            {password && confirmPassword && (
+              <FormHelperText className="ml-1 mt-1">
+                {password === confirmPassword ? (
+                  <Typography color="green" variant="caption">
+                    Password matches
+                  </Typography>
+                ) : (
+                  <Typography variant="caption" color="red">
+                    Password does not match
+                  </Typography>
+                )}
+              </FormHelperText>
+            )}
             <Button
               type="submit"
               fullWidth
@@ -203,7 +195,7 @@ const ResetPassword = () => {
               sx={{ mt: 3, mb: 2 }}
               disabled={!password}
             >
-              Send
+              Reset Password
             </Button>
           </Box>
         </Box>

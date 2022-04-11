@@ -41,6 +41,20 @@ code {
   animation: spin 1.2s linear infinite;
 }
 
+.searchAddArea {
+  display: flex;
+  margin-top: 10px;
+  justify-content: space-between;
+}
+.searchArea {
+  align-self: flex-start;
+}
+
+.addButton {
+  align-self: flex-end;
+  margin-right: 10px;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

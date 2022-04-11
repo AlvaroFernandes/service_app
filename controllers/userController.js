@@ -1,10 +1,10 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/Users");
-const sendEmail = require("../middleware/emailMiddleware");
 const ErrorResponse = require("../utils/errorResponse");
+const url = require("url");
 
 const getUserInfo = asyncHandler(async (req, res, next) => {
-  const { _id } = req.user;
+  const _id = req.user.id;
 
   const user = await User.findById(_id);
 

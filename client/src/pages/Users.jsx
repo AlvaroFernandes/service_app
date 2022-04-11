@@ -1,5 +1,7 @@
 import React from "react";
 import MenuLayout from "../components/Menu";
+import SearchBar from "../components/SearchBar";
+import AddButton from "../components/AddButton";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Box, Toolbar } from "@mui/material";
@@ -25,6 +27,10 @@ function Users() {
           }}
         >
           <Toolbar />
+          <div className="searchAddArea">
+            <SearchBar page={"staffs"} />
+            <AddButton page={"staffs"} />
+          </div>
         </Box>
       </Box>
     </ThemeProvider>

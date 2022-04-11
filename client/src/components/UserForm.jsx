@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { getUser, reset } from "../features/users/usersSlice";
 import {
   TextField,
   IconButton,
@@ -27,37 +28,49 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 const theme = createTheme();
 
 const UserForm = () => {
+  const { user, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch();
+
   const [edit, setEdit] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-
-  const { userInfo } = useSelector((state) => state.user);
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     role: "",
+    phone: "",
+    address: "",
+    salary: "",
+    obs: "",
   });
 
-  // if (password) {
-  //   let hasSixChar = password.length >= 6;
-  //   let hasLowerChar = /(.*[a-z].*)/.test(password);
-  //   let hasUpperChar = /(.*[A-Z].*)/.test(password);
-  //   let hasNumChar = /(.*[0-9].*)/.test(password);
-  //   let hasSpecialChar = /(.*[^a-zA-Z0-9].*)/.test(password);
-  // }
+  const { name, email, password, role, phone, address, salary, obs } = formData;
 
-  const onSubmit = () => {};
-  const onChange = (e) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
+  let _id = "";
+  if (user) {
+    _id = user.user._id;
+  }
 
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    if (isSuccess || user) {
+      dispatch(getUser(_id));
+    }
+  });
+
+  const { userInfo } = useSelector((state) => state.user);
+
+  const [showPassword, setShowPassword] = useState(false);
   const handleEditChange = (e) => {
-    setEdit(e.target.checked);
+    e.preventDefault();
+
+    setEdit(!edit);
   };
+  const onChange = () => {};
+  const onSubmit = () => {};
 
   return (
     <ThemeProvider theme={theme}>

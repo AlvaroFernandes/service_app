@@ -85,18 +85,12 @@ const MenuLayout = ({ title }) => {
     }
   }, [user, navigate]);
 
-  let name;
-  let role;
-  if (!user) {
-    name = "";
-  } else {
-    name = user.name;
-  }
+  let role = "staff";
+  let name = "User";
 
-  if (!user) {
-    role = "";
-  } else {
-    role = user.role;
+  if (user) {
+    role = user.user.role;
+    name = user.user.name;
   }
 
   const [open, setOpen] = useState(true);
